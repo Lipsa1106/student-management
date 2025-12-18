@@ -1,13 +1,16 @@
 from flask import Flask
+from flasgger import Swagger
+
 
 from config import Config
 from extensions import db, migrate,jwtManager
 from student.routes import student_bp
 from user.routes import user_bp
-
+app = Flask(__name__)
+Swagger(app)
 
 def create_app():
-    app = Flask(__name__)
+    
     app.config.from_object(Config)
     jwt_manager = jwtManager.init_app(app)
     db.init_app(app)

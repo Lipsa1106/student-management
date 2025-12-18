@@ -10,6 +10,38 @@ management = StudentManagement()
 @student_bp.route("/", methods=["GET", "POST"])
 @jwt_required()
 def student_list_create():
+    """
+    Get or create students
+    ---
+    tags:
+      - Students
+    security:
+      - Bearer: []
+    parameters:
+      - in: header
+        name: Authorization
+        required: true
+        type: string
+        description: Bearer JWT token
+      - in: body
+        name: body
+        schema:
+          type: object
+          properties:
+            name:
+              type: string
+            roll_no:
+              type: integer
+    responses:
+      200:
+        description: List of students
+      201:
+        description: Student created
+      400:
+        description: Validation error
+      401:
+        description: Unauthorized
+    """
     if request.method == "GET":
         try:
             result = management.get_students()
