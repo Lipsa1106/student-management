@@ -1,4 +1,5 @@
 from flask import Blueprint, request, jsonify
+from flask_jwt_extended import jwt_required
 
 from services.student_management import StudentManagement
 
@@ -7,6 +8,7 @@ management = StudentManagement()
 
 
 @student_bp.route("/", methods=["GET", "POST"])
+@jwt_required()
 def student_list_create():
     if request.method == "GET":
         try:
@@ -45,6 +47,7 @@ def student_list_create():
 
 
 @student_bp.route("/<int:id>", methods=["GET", "DELETE", "PUT"])
+@jwt_required()
 def student_delete_get_put(id):
     if not id:
         return jsonify({"message": "Missing parameter"}), 400
@@ -91,6 +94,7 @@ def student_delete_get_put(id):
 
 
 @student_bp.route("/search", methods=["GET"])
+@jwt_required()
 def student_list_search():
     name = request.args["name"]
     if not name or not isinstance(name, str):
